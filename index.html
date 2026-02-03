@@ -1,132 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Hand Firework AR</title>
+<title>Swastika ❤️ Valentine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  body { margin:0; overflow:hidden; background:black; }
-  video { display:none; }
+body{
+ margin:0;
+ font-family:'Segoe UI',sans-serif;
+ background:linear-gradient(135deg,#d4145a,#ff6a88);
+ color:white;
+ text-align:center;
+ overflow-x:hidden;
+}
+.screen{padding:30px 15px;}
+.section{
+ margin:35px 0;
+ padding-bottom:25px;
+ border-bottom:1px solid rgba(255,255,255,0.4);
+}
+img{
+ width:220px;
+ height:220px;
+ object-fit:cover;
+ border-radius:20px;
+ border:4px solid white;
+ margin-top:15px;
+}
+.timer{font-size:22px;margin:15px 0;}
+.typing{font-size:20px;min-height:70px;}
+canvas{
+ position:fixed;
+ top:0;left:0;
+ z-index:-1;
+}
 </style>
 </head>
+
 <body>
 
-<video id="video" autoplay playsinline></video>
+<canvas id="fireworks"></canvas>
 
-<!-- THREE -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/postprocessing/EffectComposer.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/postprocessing/RenderPass.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<div class="screen">
 
-<!-- MEDIAPIPE -->
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<h1>❤️ Happy Valentine Swastika ❤️</h1>
+<p>Meri ekloti jaan, mera baccha, beta, munna 💖</p>
+
+<audio autoplay loop controls>
+ <source src="song.mp3">
+</audio>
+
+<div class="timer" id="countdown"></div>
+
+<div class="typing" id="typing"></div>
+
+<div class="section">
+<h2>🌹 Rose Day</h2>
+<p>Swastika, tum meri zindagi ka sabse khoobsurat phool ho 🌹</p>
+<img src="rose.jpg">
+</div>
+
+<div class="section">
+<h2>💍 Propose Day</h2>
+<p>Mera baccha, main har janam tumhe hi choose karunga ❤️</p>
+<img src="propose.jpg">
+</div>
+
+<div class="section">
+<h2>🍫 Chocolate Day</h2>
+<p>Beta, tum chocolate jaise ho – sweet aur addictive 😍</p>
+<img src="chocolate.jpg">
+</div>
+
+<div class="section">
+<h2>🧸 Teddy Day</h2>
+<p>Munna, jab bhi miss karo samajhna main tumhare paas hoon 🤗</p>
+<img src="teddy.jpg">
+</div>
+
+<div class="section">
+<h2>🤝 Promise Day</h2>
+<p>Meri ekloti jaan, wada hai hamesha tumhara saath nibhaunga 💕</p>
+<img src="promise.jpg">
+</div>
+
+<div class="section">
+<h2>🤗 Hug Day</h2>
+<p>Swastika, tumhari hug meri duniya hai ❤️</p>
+<img src="hug.jpg">
+</div>
+
+<div class="section">
+<h2>💋 Kiss Day</h2>
+<p>Mera baccha, ek kiss jo dil tak pahunch jaaye 😘</p>
+<img src="kiss.jpg">
+</div>
+
+<div class="section">
+<h2>❤️ Valentine Day</h2>
+<p>
+Swastika, meri ekloti jaan ❤️  
+tum meri zindagi ka sabse khoobsurat hissa ho.  
+<br><b>I Love You Forever Munna</b>
+</p>
+<img src="valentine.jpg">
+</div>
+
+</div>
 
 <script>
-/* ========= SCENE ========= */
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75,innerWidth/innerHeight,0.1,1000);
-camera.position.z = 80;
+/* COUNTDOWN */
+var v=new Date("Feb 14, 2026 00:00:00").getTime();
+setInterval(()=>{
+ let d=v-new Date().getTime();
+ document.getElementById("countdown").innerHTML=
+ "⏳ Valentine in "+Math.floor(d/(1000*60*60*24))+" days";
+},1000);
 
-const renderer = new THREE.WebGLRenderer({alpha:true,antialias:true});
-renderer.setSize(innerWidth,innerHeight);
-document.body.appendChild(renderer.domElement);
-
-/* ========= BLOOM ========= */
-const composer = new THREE.EffectComposer(renderer);
-composer.addPass(new THREE.RenderPass(scene,camera));
-composer.addPass(new THREE.UnrealBloomPass(
-  new THREE.Vector2(innerWidth,innerHeight),1.8,0.4,0.85
-));
-
-/* ========= FIREWORK PARTICLES ========= */
-const COUNT = 2000;
-const geo = new THREE.BufferGeometry();
-let pos = new Float32Array(COUNT*3);
-let vel = new Float32Array(COUNT*3);
-
-function fireworkBlast(){
-  for(let i=0;i<COUNT;i++){
-    pos[i*3]=0; pos[i*3+1]=0; pos[i*3+2]=0;
-
-    const a = Math.random()*Math.PI*2;
-    const s = Math.random()*6;
-    vel[i*3]   = Math.cos(a)*s;
-    vel[i*3+1] = Math.sin(a)*s;
-    vel[i*3+2] = (Math.random()-0.5)*6;
-  }
-  geo.setAttribute("position",new THREE.BufferAttribute(pos,3));
+/* TYPING */
+let text="Swastika Dewedi… tum sirf meri mohabbat nahi ho, tum meri aadat ho, meri ekloti jaan ho, mera baccha, mera beta, mera munna ho ❤️";
+let i=0;
+function typeText(){
+ if(i<text.length){
+  document.getElementById("typing").innerHTML+=text.charAt(i);
+  i++;
+  setTimeout(typeText,70);
+ }
 }
+typeText();
 
-fireworkBlast();
-
-const mat = new THREE.PointsMaterial({
-  size:1.8,
-  color:0xff66ff,
-  transparent:true,
-  opacity:1
-});
-
-const pts = new THREE.Points(geo,mat);
-pts.position.z = -30;
-scene.add(pts);
-
-/* ========= HAND TRACKING ========= */
-const hands = new Hands({
-  locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/hands/${f}`
-});
-
-hands.setOptions({
-  maxNumHands:1,
-  minDetectionConfidence:0.6,
-  minTrackingConfidence:0.6
-});
-
-hands.onResults(r=>{
-  if(!r.multiHandLandmarks) return;
-  const h=r.multiHandLandmarks[0];
-
-  const px=(h[9].x-0.5)*innerWidth;
-  const py=-(h[9].y-0.5)*innerHeight;
-  pts.position.x=px*0.1;
-  pts.position.y=py*0.1;
-
-  const d=Math.hypot(h[8].x-h[4].x,h[8].y-h[4].y);
-
-  mat.color.setHSL(Math.random(),1,0.6);
-
-  // 👌 PINCH = FIREWORK
-  if(d<0.04){
-    fireworkBlast();
-    mat.opacity=1;
-  }
-});
-
-/* ========= CAMERA ========= */
-const cam = new Camera(video,{
-  onFrame:async()=>{await hands.send({image:video});},
-  width:640,height:480
-});
-cam.start();
-
-/* ========= ANIMATE ========= */
-function animate(){
-  requestAnimationFrame(animate);
-
-  for(let i=0;i<COUNT;i++){
-    pos[i*3]+=vel[i*3];
-    pos[i*3+1]+=vel[i*3+1];
-    pos[i*3+2]+=vel[i*3+2];
-
-    vel[i*3+1]-=0.05; // gravity
-  }
-
-  geo.attributes.position.needsUpdate=true;
-  mat.opacity*=0.98;
-
-  composer.render();
-}
-animate();
+/* FIREWORKS */
+let c=document.getElementById("fireworks"),ctx=c.getContext("2d");
+c.width=innerWidth;c.height=innerHeight;
+setInterval(()=>{
+ ctx.fillStyle="rgba(0,0,0,0.15)";
+ ctx.fillRect(0,0,c.width,c.height);
+ ctx.fillStyle="hsl("+Math.random()*360+",100%,65%)";
+ ctx.beginPath();
+ ctx.arc(Math.random()*c.width,Math.random()*c.height,3,0,Math.PI*2);
+ ctx.fill();
+},60);
 </script>
+
 </body>
 </html>
